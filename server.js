@@ -15,6 +15,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', socket => {
     console.log('New websocket connection');
+
+    socket.emit('message', 'welcome to xhumana');
 });
 
 const PORT = 3000 || process.env.PORT;
