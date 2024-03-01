@@ -14,9 +14,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 // run when someone connects
 
 io.on('connection', socket => {
-    console.log('New websocket connection');
-
+    
+    // welcome to xhumana-chat
     socket.emit('message', 'welcome to xhumana');
+
+    //when a user connects broadcast
+    socket.broadcast.emit('message', 'A user has joined the chat');
+
+    //when disconnetced 
+    socket.on('disconnected', () => {
+        io.emit('message', 'A user has left the chat');
+    });
+
+    //listen for char message
+    socket.on('chatMessage', (msg) => {
+        io.emit('message', msg);
+    })
+
 });
 
 const PORT = 3000 || process.env.PORT;
